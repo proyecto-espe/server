@@ -2,7 +2,7 @@ let app= require('express')();
 const http = require('http').Server(app);
 const express = require('express'); 
 
-const hostname = '127.0.0.1';
+/* const hostname = '127.0.0.1'; */
 const port = 3000;
 
 //var app = express();
@@ -24,7 +24,7 @@ app.use(function(req, res, next){
 //routes
 app.use(require('./routes/natacion'))
 
-http.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+http.listen(port, () => {
+  console.log(`Server running at port: ${port}`);
 });
 
