@@ -3,6 +3,11 @@ const router = express.Router();
 var getConnection = require('../conexion');
 const multer = require('multer');
 
+// Mensaje de verificación
+router.get('/', (req, res) => {
+    res.send("Bienvenido")
+})
+
 //login
 
 router.post('/login/', (req, res) => {
