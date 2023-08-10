@@ -1,0 +1,10 @@
+{
+  "service": "gmail",
+  "auth": {
+    "type": "OAuth2",
+    "user": "lecastro.proyectos@gmail.com",
+    "clientId": "197067697036-7470bjhcpie1n7v78qcl05n3sumqprsc.apps.googleusercontent.com",
+    "clientSecret": "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",
+    "refreshToken": "1//04PyHqVfgjZe6CgYIARAAGAQSNwF-L9Irlw6kv5h2SbEXT-1SH7Y8sw9d23jd9WD-nv1O_Jeh4iRyTskQgRvJGky_7U5g9My3vQI"
+  }
+}

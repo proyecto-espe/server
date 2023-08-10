@@ -2,10 +2,17 @@ const express = require('express');
 const router = express.Router();
 var getConnection = require('../conexion');
 const multer = require('multer');
+const { mail } = require("../email/mailer")
 
 // Mensaje de verificación
 router.get('/', (req, res) => {
     res.send("Bienvenido")
+})
+
+// Email
+router.post("/email", (req, res) =>{
+    const {emailData} = req.body
+    mail(emailData, res)
 })
 
 //login
