@@ -38,10 +38,12 @@ const mail = async (emailData, res) => {
         text: emailData.text,
     };
 
+    // En caso de que el tipo sea html
     if(emailData.type === "html") {
       delete mailOptions.text
       mailOptions.html = emailData.text
     }
+
     // Envía el correo electrónico
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
