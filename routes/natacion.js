@@ -49,6 +49,46 @@ router.post('/login/', (req, res) => {
     });
 });
 
+// Consultar si existe esa cedula
+router.post('/consultar-voucher', (req, res) => {
+    const { cedula } = req.body
+    getConnection(function (err, conn) {
+        if (err) {
+            return res.sendStatus(400, 'Error en conexion');
+        }
+        conn.query(`SELECT * FROM pago WHERE cedulaestudiante='${cedula}'`, function (err, rows) {
+            if (err) {
+                conn.release();
+                return res.sendStatus(400, 'No se puede conectar a la base de datos')
+            }
+            
+            res.send(rows);
+            conn.release();
+
+        })
+    });
+});
+
+// Consultar si existe esa cedula
+router.post('/consultar', (req, res) => {
+    const { cedula } = req.body
+    getConnection(function (err, conn) {
+        if (err) {
+            return res.sendStatus(400, 'Error en conexion');
+        }
+        conn.query(`SELECT * FROM preinscrito WHERE cedulapreinscrito='${cedula}'`, function (err, rows) {
+            if (err) {
+                conn.release();
+                return res.sendStatus(400, 'No se puede conectar a la base de datos')
+            }
+            
+            res.send(rows);
+            conn.release();
+
+        })
+    });
+});
+
 //Consultar preinscritos
 router.get('/preinscritos', (req, res) => {
     getConnection(function (err, conn) {
@@ -74,7 +114,11 @@ router.get('/preinscritosaprobados', (req, res) => {
         if (err) {
             return res.sendStatus(400, 'Error en conexion');
         }
-        conn.query('SELECT * FROM preinscrito WHERE estadopreinscrito IN ("Aprobado")', function (err, rows) {
+        conn.query(`
+        SELECT * FROM preinscrito
+            LEFT JOIN pago
+            ON pago.cedulaestudiante = preinscrito.cedulapreinscrito
+        WHERE preinscrito.estadopreinscrito = 'Aprobado';`, function (err, rows) {
             if (err) {
                 conn.release();
                 return res.sendStatus(400, 'No se puede conectar a la base de datos')
@@ -229,7 +273,7 @@ const storage = multer.diskStorage({
         }
         conn.query(query, function (err, result) {
             if (!err) {
-                res.json({ status: 'Registro exitoso' });
+                res.json({ result: true, status: 'Registro exitoso' });
             } else {
                 console.log(err);
             }
