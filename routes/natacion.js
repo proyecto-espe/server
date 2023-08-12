@@ -51,12 +51,12 @@ router.post('/login/', (req, res) => {
 
 // Consultar si existe esa cedula
 router.post('/consultar-voucher', (req, res) => {
-    const { cedula } = req.body
+    const { idEstudiante } = req.body
     getConnection(function (err, conn) {
         if (err) {
             return res.sendStatus(400, 'Error en conexion');
         }
-        conn.query(`SELECT * FROM pago WHERE cedulaestudiante='${cedula}'`, function (err, rows) {
+        conn.query(`SELECT * FROM pago WHERE idEstudiante='${idEstudiante}'`, function (err, rows) {
             if (err) {
                 conn.release();
                 return res.sendStatus(400, 'No se puede conectar a la base de datos')
@@ -117,7 +117,7 @@ router.get('/preinscritosaprobados', (req, res) => {
         conn.query(`
         SELECT * FROM preinscrito
             LEFT JOIN pago
-            ON pago.cedulaestudiante = preinscrito.cedulapreinscrito
+            ON pago.idEstudiante = preinscrito.idpreinscrito
         WHERE preinscrito.estadopreinscrito = 'Aprobado';`, function (err, rows) {
             if (err) {
                 conn.release();
@@ -144,20 +144,46 @@ router.post('/preinscrito/', (req, res) => {
         tutorpreinscrito: req.body.tutorpreinscrito,
         cursopreinscrito: req.body.cursopreinscrito,
         correopreinscrito: req.body.correopreinscrito,
-        fotopreinscrito: req.body.fotopreinscrito,
-        vaucherinscrito: req.body.vaucherinscrito
+        fotopreinscrito: req.body.fotopreinscrito
     }
     //console.log(data);
 
-    const query = "INSERT INTO preinscrito  (apellidopreinscrito, nombrepreinscrito, cedulapreinscrito, edadpreinscrito, sexopreinscrito, emergenciapreinscrito,  telefonopreinscrito, tutorpreinscrito, cursopreinscrito, correopreinscrito, fotopreinscrito, vaucherinscrito) VALUES (\'" + data.apellidopreinscrito + "\', \'" + data.nombrepreinscrito + "\', \'" + data.cedulapreinscrito + "\', \'" + data.edadpreinscrito + "\', \'" + data.sexopreinscrito + "\', \'" + data.emergenciapreinscrito + "\', \'" + data.telefonopreinscrito + "\', \'" + data.tutorpreinscrito + "\', \'" + data.cursopreinscrito + "\', \'" + data.correopreinscrito + "\', ?, ? )";
+    const query = `INSERT INTO preinscrito(
+        apellidopreinscrito, 
+        nombrepreinscrito, 
+        cedulapreinscrito, 
+        edadpreinscrito, 
+        sexopreinscrito, 
+        emergenciapreinscrito, 
+        telefonopreinscrito, 
+        tutorpreinscrito, 
+        cursopreinscrito, 
+        correopreinscrito, 
+        estadopreinscrito,
+        estadopreinscrito1,
+        fotopreinscrito
+        ) VALUES (
+            '${data.apellidopreinscrito}',
+            '${data.nombrepreinscrito}', 
+            '${data.cedulapreinscrito}', 
+            '${data.edadpreinscrito}',
+            '${data.sexopreinscrito}', 
+            '${data.emergenciapreinscrito}', 
+            '${data.telefonopreinscrito}',
+            '${data.tutorpreinscrito}',
+            '${data.cursopreinscrito}',
+            '${data.correopreinscrito}',
+            'Revision',
+            'Revision',
+            '${data.fotopreinscrito}');`
 
     getConnection(function (err, conn) {
         if (err) {
             console.log("No se puede conectar a la base de datos" + err);
         }
-        conn.query(query, [data.fotopreinscrito, data.vaucherinscrito], function (err, result) {
+        conn.query(query, function (err, result) {
             if (!err) {
-                res.json({ status: 'Registro exitoso' });
+                res.json({ status: 'Registro exitoso', result: true });
             } else {
                 console.log('generando error');
                 console.log(err);
@@ -221,12 +247,12 @@ router.put('/preinscrito/actualizar1/:id', (req, res) => {
             vaucherinscrito: req.body.vaucherinscrito
         }
 
-        const query = "UPDATE preinscrito SET estadopreinscrito1 = \'" + data.estadopreinscrito1 + "\', fotopreinscrito= ?,  vaucherinscrito=? WHERE idpreinscrito= ?";
+        const query = `UPDATE preinscrito SET estadopreinscrito1 = '${data.estadopreinscrito1}' WHERE idpreinscrito = '${idPreinscrito}'`;
 
         if (err) {
             console.log("No se puede conectar a la base de datos" + err);
         }
-        conn.query(query, [data.fotopreinscrito, data.vaucherinscrito, idPreinscrito], function (err, result) {
+        conn.query(query , function (err, result) {
             if (!err) {
                 res.json({ status: 'Actualizacion exitosa' });
             } else {
@@ -260,12 +286,11 @@ const storage = multer.diskStorage({
         //nombre de columna bd = lo que viene del html
         cedulapago: req.body.cedulapago,
         nombrepago: req.body.nombrepago,
-        cedulaestudiante: req.body.cedulaestudiante,
-        nombreestudiante: req.body.nombreestudiante,
+        idEstudiante: req.body.idEstudiante,
         fotopago: req.body.fotopago
     }
 
-    const query = "INSERT INTO pago  (cedulapago, nombrepago, cedulaestudiante, nombreestudiante, fotopago) VALUES (\'" + data.cedulapago + "\', \'" + data.nombrepago + "\', \'" + data.cedulaestudiante + "\', \'" + data.nombreestudiante + "\', \'" + data.fotopago + "\')";
+    const query = `INSERT INTO pago  (cedulapago, nombrepago, idEstudiante, fotopago) VALUES ('${data.cedulapago}', '${data.nombrepago}', '${data.idEstudiante}', '${data.fotopago}')`;
 
     getConnection(function (err, conn) {
         if (err) {
