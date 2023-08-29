@@ -1,6 +1,7 @@
 let app= require('express')();
 const http = require('http').Server(app);
 const port = 3000;
+const ip = "172.31.84.194";
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -16,7 +17,7 @@ app.use(function(req, res, next){
 //routes
 app.use(require('./routes/natacion'))
 
-http.listen(port, () => {
+http.listen(port, ip, () => {
   console.log(`Server running at port: ${port}`);
 });
 
