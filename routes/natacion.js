@@ -6,7 +6,7 @@ const { mail } = require("../email/mailer")
 
 // Mensaje de verificación
 router.get('/', (req, res) => {
-    res.send("Bienvenido")
+    res.send("Bienvenido API Curso de Natación")
 })
 
 // Email
