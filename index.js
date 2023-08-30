@@ -15,6 +15,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
 //routes
 app.use(require('./routes/natacion'))
 
