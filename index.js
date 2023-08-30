@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 5
 const corsOptions = {
   origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true
+  credentials:  true 
 };
 
 app.use(cors(corsOptions));
