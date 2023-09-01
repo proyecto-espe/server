@@ -1,0 +1,28 @@
+# Dependencias de Node.js
+node_modules/
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de registro y errores
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de configuración locales
+.env
+
+# Directorio de construcción (por ejemplo, para compiladores)
+/build/
+
+# Dependencias de desarrollo (por ejemplo, paquetes instalados globalmente)
+npm-debug.log
+yarn-error.log
+
+# Archivos de prueba
+coverage/
+.vscode/
+.idea/

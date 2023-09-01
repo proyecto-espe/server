@@ -23,3 +23,4 @@ http.listen(port, ip, () => {
   console.log(`Server running at port: ${port}`);
 });
 
+module.exports=app;
